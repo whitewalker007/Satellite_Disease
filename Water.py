@@ -8,6 +8,8 @@ import six
 
 # Import Data
 data = gd.Open('/home/chirag/water_s.tif')
+data_raster = data.GetRasterBand(1)
+data_array = data_raster.ReadAsArray()
 
 # Required Functions
 # Calculates zscore
