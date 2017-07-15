@@ -18,7 +18,7 @@ def calculate_zscore(band_number):
     band_array_reshaped = band_array.reshape(band_array.shape[0]*band_array.shape[1])
 
     # Define columns
-    columns = ['NDVI', 'GNDVI', 'EVI', 'EVI2', 'OSAVI', 'GSAVI', 'LAI', 'TCIG', 'ATLIVI']
+    columns = ['NDVI', 'GNDVI', 'EVI', 'EVI2', 'OSAVI', 'GSAVI', 'LAI', 'ATLIVI']
     df = pd.DataFrame(band_array_reshaped, columns=[columns[band_number-1]])
     df = df[df[columns[band_number-1]] !=-9999.0]
 
@@ -38,12 +38,11 @@ evi2_zscore = calculate_zscore(4)
 osavi_zscore = calculate_zscore(5)
 gsavi_zscore = calculate_zscore(6)
 lai_zscore = calculate_zscore(7)
-tcig_zscore = calculate_zscore(8)
-atlivi_zscore = calculate_zscore(9)
+atlivi_zscore = calculate_zscore(8)
 
 # FINAL ZSCORE
 final_zscore = (ndvi_zscore['NDVI'] + gndvi_zscore['GNDVI'] + evi_zscore['EVI'] + evi2_zscore['EVI2'] + osavi_zscore['OSAVI'] +
-                gsavi_zscore['GSAVI'] + lai_zscore['LAI'] + tcig_zscore['TCIG'] + atlivi_zscore['ATLIVI'])
+                gsavi_zscore['GSAVI'] + lai_zscore['LAI'] + atlivi_zscore['ATLIVI'])
 
 # DATAFRAME
 df = pd.DataFrame()
@@ -54,7 +53,6 @@ df['EVI2'] = evi2_zscore['EVI2']
 df['OSAVI'] = osavi_zscore['OSAVI']
 df['GSAVI'] = gsavi_zscore['GSAVI']
 df['LAI'] = lai_zscore['LAI']
-df['TCIG'] = tcig_zscore['TCIG']
 df['ATLIVI'] = atlivi_zscore['ATLIVI']
 
 # NEW DATAFRAME
