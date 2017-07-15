@@ -34,8 +34,7 @@ def calculate_zscore(band_number):
 # ZSCORES
 ndwi_zscore = calculate_zscore(1)
 mndwi_zscore = calculate_zscore(2)
-tciw_zscore = calculate_zscore(3)
-gvmi_zscore = calculate_zscore(4)
+gvmi_zscore = calculate_zscore(3)
 
 # FINAL ZSCORE
 final_zscore = (ndwi_zscore['NDWI'] + mndwi_zscore['MNDWI'] + gvmi_zscore['GVMI'])
