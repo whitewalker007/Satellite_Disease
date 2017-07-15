@@ -19,7 +19,7 @@ def calculate_zscore(band_number):
     band_array_reshaped = band_array.reshape(band_array.shape[0]*band_array.shape[1])
 
     # Define columns
-    columns = ['NDWI', 'MNDWI', 'TCIW', 'GVMI']
+    columns = ['NDWI', 'MNDWI', 'GVMI']
     df = pd.DataFrame(band_array_reshaped, columns=[columns[band_number-1]])
     df = df[df[columns[band_number-1]] !=-9999.0]
 
@@ -38,13 +38,12 @@ tciw_zscore = calculate_zscore(3)
 gvmi_zscore = calculate_zscore(4)
 
 # FINAL ZSCORE
-final_zscore = (ndwi_zscore['NDWI'] + mndwi_zscore['MNDWI'] + tciw_zscore['TCIW'] + gvmi_zscore['GVMI'])
+final_zscore = (ndwi_zscore['NDWI'] + mndwi_zscore['MNDWI'] + gvmi_zscore['GVMI'])
 
 # DATAFRAME
 df = pd.DataFrame()
 df['NDWI'] = ndwi_zscore['NDWI']
 df['MNDWI'] = mndwi_zscore['MNDWI']
-df['TCIW'] = tciw_zscore['TCIW']
 df['GVMI'] = gvmi_zscore['GVMI']
 
 # NEW DATAFRAME
