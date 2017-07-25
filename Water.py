@@ -7,13 +7,14 @@ import matplotlib.pyplot as plt
 import six
 
 # Import Data
-data = gd.Open('/home/chirag/water_s.tif')
-data_raster = data.GetRasterBand(1)
+Data = gd.Open('/home/chirag/JUNAGADH/junagadh_ndwi.tif')
+data_raster = Data.GetRasterBand(1)
 data_array = data_raster.ReadAsArray()
 
 # Required Functions
 # Calculates zscore
-def calculate_zscore(band_number):
+def calculate_zscore_1(band_number):
+    data = gd.Open('/home/chirag/JUNAGADH/junagadh_ndwi.tif')
     band_raster = data.GetRasterBand(band_number)
     band_array = band_raster.ReadAsArray()
     band_array_reshaped = band_array.reshape(band_array.shape[0]*band_array.shape[1])
@@ -26,15 +27,45 @@ def calculate_zscore(band_number):
     #Calculate Zscore
     zscore = pd.DataFrame(stats.zscore(df.values, axis=0, ddof=1), index=df.index, columns=df.columns)
     return zscore
+
+def calculate_zscore_2(band_number):
+    data = gd.Open('/home/chirag/JUNAGADH/junagadh_mndwi.tif')
+    band_raster = data.GetRasterBand(band_number)
+    band_array = band_raster.ReadAsArray()
+    band_array_reshaped = band_array.reshape(band_array.shape[0]*band_array.shape[1])
+
+    # Define columns
+    columns = ['NDWI', 'MNDWI', 'GVMI']
+    df = pd.DataFrame(band_array_reshaped, columns=[columns[band_number]])
+    df = df[df[columns[band_number]] !=-9999.0]
+
+    #Calculate Zscore
+    zscore = pd.DataFrame(stats.zscore(df.values, axis=0, ddof=1), index=df.index, columns=df.columns)
+    return zscore
+
+def calculate_zscore_3(band_number):
+    data = gd.Open('/home/chirag/JUNAGADH/junagadh_gvmi.tif')
+    band_raster = data.GetRasterBand(band_number)
+    band_array = band_raster.ReadAsArray()
+    band_array_reshaped = band_array.reshape(band_array.shape[0]*band_array.shape[1])
+
+    # Define columns
+    columns = ['NDWI', 'MNDWI', 'GVMI']
+    df = pd.DataFrame(band_array_reshaped, columns=[columns[band_number+1]])
+    df = df[df[columns[band_number+1]] !=-9999.0]
+
+    #Calculate Zscore
+    zscore = pd.DataFrame(stats.zscore(df.values, axis=0, ddof=1), index=df.index, columns=df.columns)
+    return zscore
 # Plot zscore
 # def plot(zscore):
 #     sns.distplot(zscore.values, kde=True, color='r', hist_kws={'alpha':0.5})
 #     plt.show()
 
 # ZSCORES
-ndwi_zscore = calculate_zscore(1)
-mndwi_zscore = calculate_zscore(2)
-gvmi_zscore = calculate_zscore(3)
+ndwi_zscore = calculate_zscore_1(1)
+mndwi_zscore = calculate_zscore_2(1)
+gvmi_zscore = calculate_zscore_3(1)
 
 # FINAL ZSCORE
 final_zscore = (ndwi_zscore['NDWI'] + mndwi_zscore['MNDWI'] + gvmi_zscore['GVMI'])
@@ -56,7 +87,7 @@ dk['Score'] = dk.sum(axis=1)
 
 # Converting to tiff
 def make_df(band_number):
-    band_raster = data.GetRasterBand(band_number)
+    band_raster = Data.GetRasterBand(band_number)
     band_array = band_raster.ReadAsArray()
     band_array_reshaped = band_array.reshape(band_array.shape[0]*band_array.shape[1])
 
@@ -104,8 +135,8 @@ output_raster = driver.Create(dst_filename,x_pixels, y_pixels, 1, gd.GDT_Float32
 output_raster.GetRasterBand(1).WriteArray(array)
 
 # follow code is adding GeoTranform and Projection
-geotrans=data.GetGeoTransform()  #get GeoTranform from existed 'data0'
-proj=data.GetProjection() #you can get from a exsited tif or import
+geotrans=Data.GetGeoTransform()  #get GeoTranform from existed 'data0'
+proj=Data.GetProjection() #you can get from a exsited tif or import
 output_raster.SetGeoTransform(geotrans)
 output_raster.SetProjection(proj)
 output_raster.FlushCache()
