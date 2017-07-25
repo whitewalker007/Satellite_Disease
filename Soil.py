@@ -152,8 +152,8 @@ output_raster = driver.Create(dst_filename,x_pixels, y_pixels, 1, gd.GDT_Float32
 output_raster.GetRasterBand(1).WriteArray(array)
 
 # follow code is adding GeoTranform and Projection
-geotrans=data.GetGeoTransform()  #get GeoTranform from existed 'data0'
-proj=data.GetProjection() #you can get from a exsited tif or import
+geotrans=Data.GetGeoTransform()  #get GeoTranform from existed 'data0'
+proj=Data.GetProjection() #you can get from a exsited tif or import
 output_raster.SetGeoTransform(geotrans)
 output_raster.SetProjection(proj)
 output_raster.FlushCache()
