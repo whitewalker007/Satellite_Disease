@@ -7,20 +7,126 @@ import matplotlib.pyplot as plt
 import six
 
 # Import Data
-data = gd.Open('/home/chirag/green_s.tif')
-data_raster = data.GetRasterBand(1)
+Data = gd.Open('/home/chirag/JUNAGADH/junagadh_ndvi.tif')
+data_raster = Data.GetRasterBand(1)
 data_array = data_raster.ReadAsArray()
 
 # Required Functions
-def calculate_zscore(band_number):
+def calculate_zscore_1(band_number):
+    data = gd.Open('/home/chirag/JUNAGADH/junagadh_ndvi.tif')
     band_raster = data.GetRasterBand(band_number)
     band_array = band_raster.ReadAsArray()
     band_array_reshaped = band_array.reshape(band_array.shape[0]*band_array.shape[1])
 
     # Define columns
     columns = ['NDVI', 'GNDVI', 'EVI', 'EVI2', 'OSAVI', 'GSAVI', 'LAI', 'ATLIVI']
-    df = pd.DataFrame(band_array_reshaped, columns=[columns[band_number-1]])
-    df = df[df[columns[band_number-1]] !=-9999.0]
+    df = pd.DataFrame(band_array_reshaped, columns=[columns[band_number - 1]])
+    df = df[df[columns[band_number - 1]] !=-9999.0]
+
+    #Calculate Zscore
+    zscore = pd.DataFrame(stats.zscore(df.values, axis=0, ddof=1), index=df.index, columns=df.columns)
+    return zscore
+
+def calculate_zscore_2(band_number):
+    data = gd.Open('/home/chirag/JUNAGADH/junagadh_gndvi.tif')
+    band_raster = data.GetRasterBand(band_number)
+    band_array = band_raster.ReadAsArray()
+    band_array_reshaped = band_array.reshape(band_array.shape[0]*band_array.shape[1])
+
+    # Define columns
+    columns = ['NDVI', 'GNDVI', 'EVI', 'EVI2', 'OSAVI', 'GSAVI', 'LAI', 'ATLIVI']
+    df = pd.DataFrame(band_array_reshaped, columns=[columns[band_number]])
+    df = df[df[columns[band_number]] !=-9999.0]
+
+    #Calculate Zscore
+    zscore = pd.DataFrame(stats.zscore(df.values, axis=0, ddof=1), index=df.index, columns=df.columns)
+    return zscore
+
+def calculate_zscore_3(band_number):
+    data = gd.Open('/home/chirag/JUNAGADH/EVI.tif')
+    band_raster = data.GetRasterBand(band_number)
+    band_array = band_raster.ReadAsArray()
+    band_array_reshaped = band_array.reshape(band_array.shape[0]*band_array.shape[1])
+
+    # Define columns
+    columns = ['NDVI', 'GNDVI', 'EVI', 'EVI2', 'OSAVI', 'GSAVI', 'LAI', 'ATLIVI']
+    df = pd.DataFrame(band_array_reshaped, columns=[columns[band_number + 1]])
+    df = df[df[columns[band_number + 1]] !=-9999.0]
+
+    #Calculate Zscore
+    zscore = pd.DataFrame(stats.zscore(df.values, axis=0, ddof=1), index=df.index, columns=df.columns)
+    return zscore
+
+def calculate_zscore_4(band_number):
+    data = gd.Open('/home/chirag/JUNAGADH/EVI2.tif')
+    band_raster = data.GetRasterBand(band_number)
+    band_array = band_raster.ReadAsArray()
+    band_array_reshaped = band_array.reshape(band_array.shape[0]*band_array.shape[1])
+
+    # Define columns
+    columns = ['NDVI', 'GNDVI', 'EVI', 'EVI2', 'OSAVI', 'GSAVI', 'LAI', 'ATLIVI']
+    df = pd.DataFrame(band_array_reshaped, columns=[columns[band_number + 2]])
+    df = df[df[columns[band_number + 2]] !=-9999.0]
+
+    #Calculate Zscore
+    zscore = pd.DataFrame(stats.zscore(df.values, axis=0, ddof=1), index=df.index, columns=df.columns)
+    return zscore
+
+def calculate_zscore_5(band_number):
+    data = gd.Open('/home/chirag/JUNAGADH/OSAVI.tif')
+    band_raster = data.GetRasterBand(band_number)
+    band_array = band_raster.ReadAsArray()
+    band_array_reshaped = band_array.reshape(band_array.shape[0]*band_array.shape[1])
+
+    # Define columns
+    columns = ['NDVI', 'GNDVI', 'EVI', 'EVI2', 'OSAVI', 'GSAVI', 'LAI', 'ATLIVI']
+    df = pd.DataFrame(band_array_reshaped, columns=[columns[band_number + 3]])
+    df = df[df[columns[band_number + 3]] !=-9999.0]
+
+    #Calculate Zscore
+    zscore = pd.DataFrame(stats.zscore(df.values, axis=0, ddof=1), index=df.index, columns=df.columns)
+    return zscore
+
+def calculate_zscore_6(band_number):
+    data = gd.Open('/home/chirag/JUNAGADH/GSAVI.tif')
+    band_raster = data.GetRasterBand(band_number)
+    band_array = band_raster.ReadAsArray()
+    band_array_reshaped = band_array.reshape(band_array.shape[0]*band_array.shape[1])
+
+    # Define columns
+    columns = ['NDVI', 'GNDVI', 'EVI', 'EVI2', 'OSAVI', 'GSAVI', 'LAI', 'ATLIVI']
+    df = pd.DataFrame(band_array_reshaped, columns=[columns[band_number + 4]])
+    df = df[df[columns[band_number + 4]] !=-9999.0]
+
+    #Calculate Zscore
+    zscore = pd.DataFrame(stats.zscore(df.values, axis=0, ddof=1), index=df.index, columns=df.columns)
+    return zscore
+
+def calculate_zscore_7(band_number):
+    data = gd.Open('/home/chirag/JUNAGADH/junagadh_lai.tif')
+    band_raster = data.GetRasterBand(band_number)
+    band_array = band_raster.ReadAsArray()
+    band_array_reshaped = band_array.reshape(band_array.shape[0]*band_array.shape[1])
+
+    # Define columns
+    columns = ['NDVI', 'GNDVI', 'EVI', 'EVI2', 'OSAVI', 'GSAVI', 'LAI', 'ATLIVI']
+    df = pd.DataFrame(band_array_reshaped, columns=[columns[band_number + 5]])
+    df = df[df[columns[band_number + 5]] !=-9999.0]
+
+    #Calculate Zscore
+    zscore = pd.DataFrame(stats.zscore(df.values, axis=0, ddof=1), index=df.index, columns=df.columns)
+    return zscore
+
+def calculate_zscore_8(band_number):
+    data = gd.Open('/home/chirag/JUNAGADH/ATLIVI.tif')
+    band_raster = data.GetRasterBand(band_number)
+    band_array = band_raster.ReadAsArray()
+    band_array_reshaped = band_array.reshape(band_array.shape[0]*band_array.shape[1])
+
+    # Define columns
+    columns = ['NDVI', 'GNDVI', 'EVI', 'EVI2', 'OSAVI', 'GSAVI', 'LAI', 'ATLIVI']
+    df = pd.DataFrame(band_array_reshaped, columns=[columns[band_number + 6]])
+    df = df[df[columns[band_number + 6]] !=-9999.0]
 
     #Calculate Zscore
     zscore = pd.DataFrame(stats.zscore(df.values, axis=0, ddof=1), index=df.index, columns=df.columns)
@@ -31,14 +137,14 @@ def calculate_zscore(band_number):
 #     plt.show()
 
 # ZSCORES
-ndvi_zscore = calculate_zscore(1)
-gndvi_zscore = calculate_zscore(2)
-evi_zscore = calculate_zscore(3)
-evi2_zscore = calculate_zscore(4)
-osavi_zscore = calculate_zscore(5)
-gsavi_zscore = calculate_zscore(6)
-lai_zscore = calculate_zscore(7)
-atlivi_zscore = calculate_zscore(8)
+ndvi_zscore = calculate_zscore_1(1)
+gndvi_zscore = calculate_zscore_2(1)
+evi_zscore = calculate_zscore_3(1)
+evi2_zscore = calculate_zscore_4(1)
+osavi_zscore = calculate_zscore_5(1)
+gsavi_zscore = calculate_zscore_6(1)
+lai_zscore = calculate_zscore_7(1)
+atlivi_zscore = calculate_zscore_8(1)
 
 # FINAL ZSCORE
 final_zscore = (ndvi_zscore['NDVI'] + gndvi_zscore['GNDVI'] + evi_zscore['EVI'] + evi2_zscore['EVI2'] + osavi_zscore['OSAVI'] +
@@ -66,7 +172,7 @@ dk['Score'] = dk.sum(axis=1)
 
 # Converting to tiff
 def make_df(band_number):
-    band_raster = data.GetRasterBand(band_number)
+    band_raster = Data.GetRasterBand(band_number)
     band_array = band_raster.ReadAsArray()
     band_array_reshaped = band_array.reshape(band_array.shape[0]*band_array.shape[1])
 
@@ -114,8 +220,8 @@ output_raster = driver.Create(dst_filename,x_pixels, y_pixels, 1, gd.GDT_Float32
 output_raster.GetRasterBand(1).WriteArray(array)
 
 # follow code is adding GeoTranform and Projection
-geotrans=data.GetGeoTransform()  #get GeoTranform from existed 'data0'
-proj=data.GetProjection() #you can get from a exsited tif or import
+geotrans=Data.GetGeoTransform()  #get GeoTranform from existed 'data0'
+proj=Data.GetProjection() #you can get from a exsited tif or import
 output_raster.SetGeoTransform(geotrans)
 output_raster.SetProjection(proj)
 output_raster.FlushCache()
