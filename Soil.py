@@ -7,13 +7,14 @@ import matplotlib.pyplot as plt
 import six
 
 # Import Data
-data = gd.Open('/home/chirag/soil_s.tif')
-data_raster = data.GetRasterBand(1)
+Data = gd.Open('/home/chirag/JUNAGADH/junagadh_ndsai.tif')
+data_raster = Data.GetRasterBand(1)
 data_array = data_raster.ReadAsArray()
 
 # Required Functions
 # Calculates zscore
-def calculate_zscore(band_number):
+def calculate_zscore_1(band_number):
+    data = gd.Open('/home/chirag/JUNAGADH/junagadh_ndsai.tif')
     band_raster = data.GetRasterBand(band_number)
     band_array = band_raster.ReadAsArray()
     band_array_reshaped = band_array.reshape(band_array.shape[0]*band_array.shape[1])
@@ -26,16 +27,61 @@ def calculate_zscore(band_number):
     #Calculate Zscore
     zscore = pd.DataFrame(stats.zscore(df.values, axis=0, ddof=1), index=df.index, columns=df.columns)
     return zscore
+
+def calculate_zscore_2(band_number):
+    data = gd.Open('/home/chirag/JUNAGADH/junagadh_carb.tif')
+    band_raster = data.GetRasterBand(band_number)
+    band_array = band_raster.ReadAsArray()
+    band_array_reshaped = band_array.reshape(band_array.shape[0]*band_array.shape[1])
+
+    # Define columns
+    columns = ['NDSAI', 'CARB', 'SBL', 'SCI']
+    df = pd.DataFrame(band_array_reshaped, columns=[columns[band_number]])
+    df = df[df[columns[band_number]] !=-9999.0]
+
+    #Calculate Zscore
+    zscore = pd.DataFrame(stats.zscore(df.values, axis=0, ddof=1), index=df.index, columns=df.columns)
+    return zscore
+
+def calculate_zscore_3(band_number):
+    data = gd.Open('/home/chirag/JUNAGADH/junagadh_sbl.tif')
+    band_raster = data.GetRasterBand(band_number)
+    band_array = band_raster.ReadAsArray()
+    band_array_reshaped = band_array.reshape(band_array.shape[0]*band_array.shape[1])
+
+    # Define columns
+    columns = ['NDSAI', 'CARB', 'SBL', 'SCI']
+    df = pd.DataFrame(band_array_reshaped, columns=[columns[band_number + 1]])
+    df = df[df[columns[band_number + 1]] !=-9999.0]
+
+    #Calculate Zscore
+    zscore = pd.DataFrame(stats.zscore(df.values, axis=0, ddof=1), index=df.index, columns=df.columns)
+    return zscore
+
+def calculate_zscore_4(band_number):
+    data = gd.Open('/home/chirag/JUNAGADH/junagadh_sci.tif')
+    band_raster = data.GetRasterBand(band_number)
+    band_array = band_raster.ReadAsArray()
+    band_array_reshaped = band_array.reshape(band_array.shape[0]*band_array.shape[1])
+
+    # Define columns
+    columns = ['NDSAI', 'CARB', 'SBL', 'SCI']
+    df = pd.DataFrame(band_array_reshaped, columns=[columns[band_number + 2]])
+    df = df[df[columns[band_number + 2]] !=-9999.0]
+
+    #Calculate Zscore
+    zscore = pd.DataFrame(stats.zscore(df.values, axis=0, ddof=1), index=df.index, columns=df.columns)
+    return zscore
 # Plot zscore
 # def plot(zscore):
 #     sns.distplot(zscore.values, kde=True, color='r', hist_kws={'alpha':0.5})
 #     plt.show()
 
 # ZSCORES
-ndsai_zscore = calculate_zscore(1)
-carb_zscore = calculate_zscore(2)
-sbl_zscore = calculate_zscore(3)
-sci_zscore = calculate_zscore(4)
+ndsai_zscore = calculate_zscore_1(1)
+carb_zscore = calculate_zscore_2(2)
+sbl_zscore = calculate_zscore_3(3)
+sci_zscore = calculate_zscore_4(4)
 
 # FINAL ZSCORE
 final_zscore = (ndsai_zscore['NDSAI'] + carb_zscore['CARB'] + sbl_zscore['SBL'] + sci_zscore['SCI'])
@@ -58,7 +104,7 @@ dk['Score'] = dk.sum(axis=1)
 
 # Converting to tiff
 def make_df(band_number):
-    band_raster = data.GetRasterBand(band_number)
+    band_raster = Data.GetRasterBand(band_number)
     band_array = band_raster.ReadAsArray()
     band_array_reshaped = band_array.reshape(band_array.shape[0]*band_array.shape[1])
 
