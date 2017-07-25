@@ -79,9 +79,9 @@ def calculate_zscore_4(band_number):
 
 # ZSCORES
 ndsai_zscore = calculate_zscore_1(1)
-carb_zscore = calculate_zscore_2(2)
-sbl_zscore = calculate_zscore_3(3)
-sci_zscore = calculate_zscore_4(4)
+carb_zscore = calculate_zscore_2(1)
+sbl_zscore = calculate_zscore_3(1)
+sci_zscore = calculate_zscore_4(1)
 
 # FINAL ZSCORE
 final_zscore = (ndsai_zscore['NDSAI'] + carb_zscore['CARB'] + sbl_zscore['SBL'] + sci_zscore['SCI'])
